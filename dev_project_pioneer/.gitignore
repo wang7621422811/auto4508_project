@@ -1,0 +1,27 @@
+# ROS 2 / colcon build artefacts
+build/
+install/
+log/
+
+# Saved map and path data
+map_data/
+
+# TF frame graph exports
+*.gv
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Private task documentation — do not commit
+docs/task1_individual.md

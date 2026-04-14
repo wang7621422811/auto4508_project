@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -lah /home/parallels/auto4508/dev_project_pioneer/src/p3at/meshes/*.dae)"
+    ]
+  }
+}

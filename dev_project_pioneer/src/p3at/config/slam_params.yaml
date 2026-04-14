@@ -1,0 +1,77 @@
+# =============================================================================
+# slam_toolbox 参数：在线异步 SLAM（建图 + 发布 map 与 map→odom TF）
+# 由 navigation.launch.py 传入 slam_params_file；须与 URDF/Nav2 一致：
+#   base_frame / odom_frame / map_frame、scan_topic=/scan、use_sim_time。
+# =============================================================================
+slam_toolbox:
+  ros__parameters:
+    use_sim_time: true
+
+    # ---------- Ceres 非线性求解器（后端位姿图优化）----------
+    solver_plugin: solver_plugins::CeresSolver
+    ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
+    ceres_preconditioner: SCHUR_JACOBI
+    ceres_trust_strategy: LEVENBERG_MARQUARDT
+    ceres_dogleg_type: TRADITIONAL_DOGLEG
+    ceres_loss_function: None
+
+    # ---------- 坐标系与输入输出（须与 TF、Nav2 一致）----------
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_link
+    scan_topic: /scan
+    use_map_saver: true
+    mode: mapping
+
+    # ---------- 地图更新与 TF 发布节奏 ----------
+    debug_logging: false
+    throttle_scans: 1
+    transform_publish_period: 0.02
+    map_update_interval: 1.0
+    resolution: 0.05
+    max_laser_range: 12.0
+    minimum_time_interval: 0.5
+    transform_timeout: 0.2
+    tf_buffer_duration: 30.0
+    stack_size_to_use: 40000000
+    enable_interactive_mode: true
+
+    # ---------- 扫描匹配与关键帧策略（何时把新一帧激光并入图）----------
+    use_scan_matching: true
+    use_scan_barycenter: true
+    minimum_travel_distance: 0.3
+    minimum_travel_heading: 0.3
+    scan_buffer_size: 10
+    scan_buffer_maximum_scan_distance: 10.0
+    link_match_minimum_response_fine: 0.1
+    link_scan_maximum_distance: 1.5
+
+    # ---------- 回环检测（识别“回到旧地方”，消除累积漂移）----------
+    loop_search_maximum_distance: 3.0
+    do_loop_closing: true
+    loop_match_minimum_chain_size: 10
+    loop_match_maximum_variance_coarse: 3.0
+    loop_match_minimum_response_coarse: 0.35
+    loop_match_minimum_response_fine: 0.45
+
+    # ---------- 扫描相关时的搜索窗口（位姿初值附近的平移/角度搜索）----------
+    correlation_search_space_dimension: 0.5
+    correlation_search_space_resolution: 0.01
+    correlation_search_space_smear_deviation: 0.1
+
+    loop_search_space_dimension: 8.0
+    loop_search_space_resolution: 0.05
+    loop_search_space_smear_deviation: 0.03
+
+    # ---------- 边约束与匹配惩罚（图优化里对距离/角度误差的权重）----------
+    distance_variance_penalty: 0.5
+    angle_variance_penalty: 1.0
+
+    fine_search_angle_offset: 0.00349
+    coarse_search_angle_offset: 0.349
+    coarse_angle_resolution: 0.0349
+    minimum_angle_penalty: 0.9
+    minimum_distance_penalty: 0.5
+    use_response_expansion: true
+    min_pass_through: 1
+    occupancy_threshold: 0.25

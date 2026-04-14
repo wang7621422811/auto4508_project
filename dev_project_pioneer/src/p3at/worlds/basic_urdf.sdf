@@ -1,0 +1,1131 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+    <world name="james_oval_world">
+        <physics name="1ms" type="ignored">
+            <max_step_size>0.001</max_step_size>
+            <real_time_factor>1.0</real_time_factor>
+        </physics>
+        <!-- 跑物理引擎（重力、刚体、关节约束等） -->
+        <plugin
+            filename="libgz-sim-physics-system"
+            name="gz::sim::systems::Physics">
+        </plugin>
+        <!-- 处理 GUI/用户命令（例如拖动物体等交互）。 -->
+        <plugin
+            filename="libgz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands">
+        </plugin>
+        <!-- 把场景状态播给 GUI/客户端，才能在仿真里看到模型。 -->
+        <plugin
+            filename="libgz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster">
+        </plugin>
+        <!-- 让带 IMU 传感器的模型能按物理状态输出 IMU 数据。 -->
+        <plugin filename="libgz-sim-imu-system"
+                name="gz::sim::systems::Imu">
+        </plugin>
+        <!-- 让带传感器（例如相机）的模型能按物理状态输出传感器数据。 -->
+        <plugin filename="libgz-sim-sensors-system.so"
+                name="gz::sim::systems::Sensors">
+        </plugin>
+        <!-- 处理模型间的物理接触（碰撞检测、响应等）。 -->
+        <plugin filename="libgz-sim-contact-system"
+                name="gz::sim::systems::Contact">
+        </plugin>
+
+        <light type="directional" name="sun">
+                <cast_shadows>true</cast_shadows>
+                <pose>0 0 10 0 0 0</pose>
+                <diffuse>0.8 0.8 0.8 1</diffuse>
+                <specular>0.2 0.2 0.2 1</specular>
+                <attenuation>
+                    <range>1000</range>
+                    <constant>0.9</constant>
+                    <linear>0.01</linear>
+                    <quadratic>0.001</quadratic>
+                </attenuation>
+                <direction>-0.5 0.1 -0.9</direction>
+            </light>
+
+            <model name="ground_plane">
+                <static>true</static>
+                <link name="link">
+                    <collision name="collision">
+                    <geometry>
+                        <plane>
+                        <normal>0 0 1</normal>
+                        </plane>
+                    </geometry>
+                    </collision>
+                    <visual name="visual">
+                    <geometry>
+                        <plane>
+                        <normal>0 0 1</normal>
+                        <size>22 22</size>
+                        </plane>
+                    </geometry>
+                    <material>
+                        <ambient>0.22 0.48 0.18 1</ambient>
+                        <diffuse>0.28 0.55 0.22 1</diffuse>
+                        <specular>0.12 0.12 0.12 1</specular>
+                    </material>
+                    </visual>
+                </link>
+            </model>
+
+            <!-- James Oval: map ~150m x 125m (50m scale); field scaled 1/10 (~15m N-S x 12.5m E-W).
+                 Obstacles use full-scale geometry for sensible LiDAR / avoidance vs Pioneer. -->
+
+            <!-- Elliptical boundary (scaled field) -->
+            <model name="oval_fence_00">
+                <static>true</static>
+                <pose>6.2402 0.4205 0.0175 0 0 1.6176</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_01">
+                <static>true</static>
+                <pose>6.1617 1.2563 0.0175 0 0 1.7115</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_02">
+                <static>true</static>
+                <pose>6.0057 2.0763 0.0175 0 0 1.8064</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_03">
+                <static>true</static>
+                <pose>5.7742 2.8701 0.0175 0 0 1.9032</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_04">
+                <static>true</static>
+                <pose>5.4701 3.6279 0.0175 0 0 2.0024</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_05">
+                <static>true</static>
+                <pose>5.0973 4.34 0.0175 0 0 2.1048</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_06">
+                <static>true</static>
+                <pose>4.6603 4.9976 0.0175 0 0 2.2109</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_07">
+                <static>true</static>
+                <pose>4.1647 5.5923 0.0175 0 0 2.3213</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_08">
+                <static>true</static>
+                <pose>3.6167 6.1167 0.0175 0 0 2.4363</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_09">
+                <static>true</static>
+                <pose>3.0232 6.5642 0.0175 0 0 2.556</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_10">
+                <static>true</static>
+                <pose>2.3918 6.9291 0.0175 0 0 2.6803</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_11">
+                <static>true</static>
+                <pose>1.7302 7.2069 0.0175 0 0 2.8087</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_12">
+                <static>true</static>
+                <pose>1.0469 7.394 0.0175 0 0 2.9405</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_13">
+                <static>true</static>
+                <pose>0.3504 7.4882 0.0175 0 0 3.0743</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_14">
+                <static>true</static>
+                <pose>-0.3504 7.4882 0.0175 0 0 -3.0743</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_15">
+                <static>true</static>
+                <pose>-1.0469 7.394 0.0175 0 0 -2.9405</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_16">
+                <static>true</static>
+                <pose>-1.7302 7.2069 0.0175 0 0 -2.8087</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_17">
+                <static>true</static>
+                <pose>-2.3918 6.9291 0.0175 0 0 -2.6803</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_18">
+                <static>true</static>
+                <pose>-3.0232 6.5642 0.0175 0 0 -2.556</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_19">
+                <static>true</static>
+                <pose>-3.6167 6.1167 0.0175 0 0 -2.4363</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_20">
+                <static>true</static>
+                <pose>-4.1647 5.5923 0.0175 0 0 -2.3213</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_21">
+                <static>true</static>
+                <pose>-4.6603 4.9976 0.0175 0 0 -2.2109</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_22">
+                <static>true</static>
+                <pose>-5.0973 4.34 0.0175 0 0 -2.1048</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_23">
+                <static>true</static>
+                <pose>-5.4701 3.6279 0.0175 0 0 -2.0024</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_24">
+                <static>true</static>
+                <pose>-5.7742 2.8701 0.0175 0 0 -1.9032</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_25">
+                <static>true</static>
+                <pose>-6.0057 2.0763 0.0175 0 0 -1.8064</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_26">
+                <static>true</static>
+                <pose>-6.1617 1.2563 0.0175 0 0 -1.7115</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_27">
+                <static>true</static>
+                <pose>-6.2402 0.4205 0.0175 0 0 -1.6176</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_28">
+                <static>true</static>
+                <pose>-6.2402 -0.4205 0.0175 0 0 -1.524</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_29">
+                <static>true</static>
+                <pose>-6.1617 -1.2563 0.0175 0 0 -1.4301</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_30">
+                <static>true</static>
+                <pose>-6.0057 -2.0763 0.0175 0 0 -1.3352</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_31">
+                <static>true</static>
+                <pose>-5.7742 -2.8701 0.0175 0 0 -1.2384</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_32">
+                <static>true</static>
+                <pose>-5.4701 -3.6279 0.0175 0 0 -1.1392</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_33">
+                <static>true</static>
+                <pose>-5.0973 -4.34 0.0175 0 0 -1.0368</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_34">
+                <static>true</static>
+                <pose>-4.6603 -4.9976 0.0175 0 0 -0.9307</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_35">
+                <static>true</static>
+                <pose>-4.1647 -5.5923 0.0175 0 0 -0.8203</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_36">
+                <static>true</static>
+                <pose>-3.6167 -6.1167 0.0175 0 0 -0.7053</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_37">
+                <static>true</static>
+                <pose>-3.0232 -6.5642 0.0175 0 0 -0.5856</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_38">
+                <static>true</static>
+                <pose>-2.3918 -6.9291 0.0175 0 0 -0.4613</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_39">
+                <static>true</static>
+                <pose>-1.7302 -7.2069 0.0175 0 0 -0.3329</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_40">
+                <static>true</static>
+                <pose>-1.0469 -7.394 0.0175 0 0 -0.2011</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_41">
+                <static>true</static>
+                <pose>-0.3504 -7.4882 0.0175 0 0 -0.0673</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_42">
+                <static>true</static>
+                <pose>0.3504 -7.4882 0.0175 0 0 0.0673</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7017 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_43">
+                <static>true</static>
+                <pose>1.0469 -7.394 0.0175 0 0 0.2011</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7056 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_44">
+                <static>true</static>
+                <pose>1.7302 -7.2069 0.0175 0 0 0.3329</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.713 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_45">
+                <static>true</static>
+                <pose>2.3918 -6.9291 0.0175 0 0 0.4613</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7235 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_46">
+                <static>true</static>
+                <pose>3.0232 -6.5642 0.0175 0 0 0.5856</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7365 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_47">
+                <static>true</static>
+                <pose>3.6167 -6.1167 0.0175 0 0 0.7053</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7511 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_48">
+                <static>true</static>
+                <pose>4.1647 -5.5923 0.0175 0 0 0.8203</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7667 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_49">
+                <static>true</static>
+                <pose>4.6603 -4.9976 0.0175 0 0 0.9307</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7823 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_50">
+                <static>true</static>
+                <pose>5.0973 -4.34 0.0175 0 0 1.0368</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.7973 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_51">
+                <static>true</static>
+                <pose>5.4701 -3.6279 0.0175 0 0 1.1392</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8109 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_52">
+                <static>true</static>
+                <pose>5.7742 -2.8701 0.0175 0 0 1.2384</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8225 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_53">
+                <static>true</static>
+                <pose>6.0057 -2.0763 0.0175 0 0 1.3352</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8316 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_54">
+                <static>true</static>
+                <pose>6.1617 -1.2563 0.0175 0 0 1.4301</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8379 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="oval_fence_55">
+                <static>true</static>
+                <pose>6.2402 -0.4205 0.0175 0 0 1.524</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                        <material>
+                            <ambient>0.95 0.95 0.95 1</ambient>
+                            <diffuse>0.9 0.9 0.88 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><box><size>0.8411 0.025 0.035</size></box></geometry>
+                    </collision>
+                </link>
+            </model>
+
+            <!-- Traffic cones (full-scale geometry) -->
+            <model name="cone_01">
+                <static>true</static>
+                <pose>2.5 3.0 0.16 0 0 0.3</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                        <material>
+                            <ambient>1.0 0.35 0.0 1</ambient>
+                            <diffuse>0.95 0.4 0.05 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="cone_02">
+                <static>true</static>
+                <pose>-3.5 2.2 0.16 0 0 -0.5</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                        <material>
+                            <ambient>1.0 0.35 0.0 1</ambient>
+                            <diffuse>0.95 0.4 0.05 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="cone_03">
+                <static>true</static>
+                <pose>4.2 -2.8 0.16 0 0 1.2</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                        <material>
+                            <ambient>1.0 0.35 0.0 1</ambient>
+                            <diffuse>0.95 0.4 0.05 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="cone_04">
+                <static>true</static>
+                <pose>-4.8 -3.5 0.16 0 0 0.0</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                        <material>
+                            <ambient>1.0 0.35 0.0 1</ambient>
+                            <diffuse>0.95 0.4 0.05 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="cone_05">
+                <static>true</static>
+                <pose>1.2 5.5 0.16 0 0 2.1</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                        <material>
+                            <ambient>1.0 0.35 0.0 1</ambient>
+                            <diffuse>0.95 0.4 0.05 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="cone_06">
+                <static>true</static>
+                <pose>-2.2 4.8 0.16 0 0 -1.0</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                        <material>
+                            <ambient>1.0 0.35 0.0 1</ambient>
+                            <diffuse>0.95 0.4 0.05 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cone><radius>0.18</radius><length>0.32</length></cone></geometry>
+                    </collision>
+                </link>
+            </model>
+
+            <!-- Buckets (full-scale geometry) -->
+            <model name="bucket_01">
+                <static>true</static>
+                <pose>-3.2 -3.8 0.19 0 0 0.0</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cylinder><radius>0.22</radius><length>0.38</length></cylinder></geometry>
+                        <material>
+                            <ambient>0.85 0.82 0.78 1</ambient>
+                            <diffuse>0.75 0.72 0.68 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cylinder><radius>0.22</radius><length>0.38</length></cylinder></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="bucket_02">
+                <static>true</static>
+                <pose>3.8 3.2 0.19 0 0 0.4</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cylinder><radius>0.22</radius><length>0.38</length></cylinder></geometry>
+                        <material>
+                            <ambient>0.85 0.82 0.78 1</ambient>
+                            <diffuse>0.75 0.72 0.68 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cylinder><radius>0.22</radius><length>0.38</length></cylinder></geometry>
+                    </collision>
+                </link>
+            </model>
+            <model name="bucket_03">
+                <static>true</static>
+                <pose>-1.8 -5.2 0.19 0 0 -0.2</pose>
+                <link name="link">
+                    <visual name="v">
+                        <geometry><cylinder><radius>0.22</radius><length>0.38</length></cylinder></geometry>
+                        <material>
+                            <ambient>0.85 0.82 0.78 1</ambient>
+                            <diffuse>0.75 0.72 0.68 1</diffuse>
+                        </material>
+                    </visual>
+                    <collision name="c">
+                        <geometry><cylinder><radius>0.22</radius><length>0.38</length></cylinder></geometry>
+                    </collision>
+                </link>
+            </model>
+
+            <include>
+                <uri>file:///home/parallels/auto4508/dev_project_pioneer/src/p3at/robots/pioneer.urdf</uri>
+                <name>pioneer</name>
+                <pose>-5.0 0 0.1 0 0 0</pose>
+            </include>
+    </world>
+</sdf>
