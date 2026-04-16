@@ -1,0 +1,39 @@
+# Mission waypoints in map frame (x, y metres, yaw radians).
+# The robot starts at (-5.0, 0.0) and must visit all waypoints before returning.
+# WP1 -> WP2 segment includes slalom weaving through intermediate cones.
+#
+# Coloured objects near each waypoint:
+#   WP1: red sphere  at (~4.5, 3.0),   ~2 m east
+#   WP2: blue box    at (-3.5, 4.2),   ~2 m north
+#   WP3: green cyl   at (4.2, -4.8),   ~2 m south
+#   WP4: yellow box  at (-4.8, -1.8),  ~1.7 m north
+
+waypoints:
+  - name: "WP1"
+    x: 2.5
+    y: 3.0
+    yaw: 0.0
+  - name: "WP2"
+    x: -3.5
+    y: 2.2
+    yaw: 0.0
+  - name: "WP3"
+    x: 4.2
+    y: -2.8
+    yaw: 0.0
+  - name: "WP4"
+    x: -4.8
+    y: -3.5
+    yaw: 0.0
+
+# Pair of waypoint indices (0-based) between which the weave manoeuvre is performed
+weave_segment: [0, 1]
+
+# Approximate positions of the 5 weaving cones (map frame).
+# Used by the ConeWeaver node as prior estimates; actual detection is LiDAR-based.
+weave_cone_positions:
+  - {x: 1.207,  y: 3.533}
+  - {x: 0.192,  y: 1.927}
+  - {x: -0.592, y: 3.293}
+  - {x: -1.508, y: 1.807}
+  - {x: -2.792, y: 3.053}

@@ -1,0 +1,84 @@
+# ============================================================
+# Mission parameters for Pioneer P3-AT Part 2
+# ============================================================
+
+# --- MissionController ---
+mission_controller:
+  ros__parameters:
+    use_sim_time: true
+    waypoints_file: "waypoints.yaml"
+    waypoint_reached_radius: 1.5        # metres — "within 1-2 m" per task spec
+    photo_save_dir: "~/mission_photos"
+    weave_enabled: true
+
+# --- WaypointController ---
+waypoint_controller:
+  ros__parameters:
+    use_sim_time: true
+    kp_linear: 0.6
+    kp_angular: 2.0
+    max_linear: 0.35
+    max_angular: 1.2
+    position_tol: 1.5            # widened from Part 1 (0.15 m) — cone within 1-2 m
+    heading_tol: 0.10
+    control_hz: 20.0
+    map_frame: "map"
+    base_frame: "base_link"
+    obstacle_distance: 0.7
+    obstacle_stop_distance: 0.35
+    scan_front_angle: 0.7        # half-width of forward cone (rad)
+    pass_on_right_offset: 0.35   # angular bias to keep cone on right during approach
+
+# --- ConeWeaver ---
+cone_weaver:
+  ros__parameters:
+    use_sim_time: true
+    map_frame: "map"
+    base_frame: "base_link"
+    scan_cluster_gap: 0.4        # m — max gap within a cone cluster
+    scan_min_range: 0.2
+    scan_max_range: 4.0          # only look for weave cones within 4 m
+    pass_offset: 0.7             # m — how far to the side of each cone to aim
+    approach_speed: 0.25         # m/s during weaving
+    weave_position_tol: 0.4      # m — accept intermediate waypoint within this radius
+
+# --- VisionDetector ---
+vision_detector:
+  ros__parameters:
+    use_sim_time: true
+    photo_save_dir: "~/mission_photos"
+    # HSV range for orange cone detection
+    orange_h_low: 5
+    orange_h_high: 20
+    orange_s_low: 150
+    orange_v_low: 100
+    # Known cone height (m) for distance estimation from pixel height
+    cone_real_height: 0.32
+    # Minimum contour area (px^2) to consider a colour detection valid
+    min_contour_area: 200
+
+# --- GamepadController ---
+gamepad_controller:
+  ros__parameters:
+    use_sim_time: true
+    # PS4/Xbox button indices (adjust if controller layout differs)
+    auto_button: 0       # X / A button -> enable automated mode
+    manual_button: 1     # O / B button -> enable manual mode
+    deadman_axis_l: 2    # L2 trigger axis (value range -1..1; pressed = +1)
+    deadman_axis_r: 5    # R2 trigger axis
+    deadman_threshold: 0.5   # trigger must exceed this to count as "held"
+    drive_linear_axis: 1     # left stick Y (forward/back)
+    drive_angular_axis: 0    # left stick X (turn)
+    max_manual_linear: 0.35  # m/s
+    max_manual_angular: 1.2  # rad/s
+
+# --- PathRecorder ---
+path_recorder:
+  ros__parameters:
+    use_sim_time: true
+    record_hz: 2.0
+    publish_hz: 1.0
+    min_move: 0.05
+    map_frame: "map"
+    base_frame: "base_link"
+    output_dir: "~/mission_data"

@@ -1,0 +1,119 @@
+# ============================================================
+# Mission parameters for Pioneer P3-AT Part 2 — REAL ROBOT
+# ============================================================
+# Overrides mission_params.yaml for hardware deployment:
+#   - use_sim_time: false on every node
+#   - GPS-based waypoints (use_gps_waypoints: true)
+#   - Reduced speeds for real-world safety
+#   - Camera topic remapped to OAK-D output
+#   - Sensor topic names matching real hardware drivers
+#
+# Load alongside mission_params.yaml:
+#   ros2 launch pioneer_part2 robot.launch.py
+# (robot.launch.py passes this file as an overlay)
+
+# --- GpsConverter ---
+gps_converter:
+  ros__parameters:
+    use_sim_time: false
+    # waypoints_gps_file defaults to <package>/config/waypoints_gps.yaml
+    # Override here if the file lives elsewhere:
+    # waypoints_gps_file: "/path/to/waypoints_gps.yaml"
+    map_frame: "map"
+    fix_covariance_max: 25.0   # m^2 — reject fixes worse than ~5 m accuracy
+    publish_hz: 5.0
+    # datum_latitude / datum_longitude can override the waypoints_gps.yaml datum:
+    # datum_latitude:  -31.97990
+    # datum_longitude: 115.81740
+
+# --- MissionController ---
+mission_controller:
+  ros__parameters:
+    use_sim_time: false
+    use_gps_waypoints: true             # load waypoints from /gps_waypoints topic
+    waypoints_file: "waypoints_gps.yaml"  # fallback if GPS not used
+    waypoint_reached_radius: 1.5        # metres
+    photo_save_dir: "~/mission_photos"
+    weave_enabled: true
+
+# --- WaypointController ---
+waypoint_controller:
+  ros__parameters:
+    use_sim_time: false
+    kp_linear: 0.5               # slightly more conservative on real hardware
+    kp_angular: 1.8
+    max_linear: 0.25             # reduced for safety (0.35 in sim)
+    max_angular: 1.0
+    position_tol: 1.5
+    heading_tol: 0.12
+    control_hz: 20.0
+    map_frame: "map"
+    base_frame: "base_link"
+    obstacle_distance: 0.8       # stop earlier on real robot
+    obstacle_stop_distance: 0.4
+    scan_front_angle: 0.7
+    pass_on_right_offset: 0.35
+    # Real LiDAR topic published by SICK/Lakibeam driver: /scan (default)
+    # Remap in robot.launch.py if driver uses a different name
+
+# --- ConeWeaver ---
+cone_weaver:
+  ros__parameters:
+    use_sim_time: false
+    map_frame: "map"
+    base_frame: "base_link"
+    scan_cluster_gap: 0.4
+    scan_min_range: 0.2
+    scan_max_range: 4.0
+    pass_offset: 0.7
+    approach_speed: 0.20         # reduced for real robot
+    weave_position_tol: 0.4
+
+# --- VisionDetector ---
+vision_detector:
+  ros__parameters:
+    use_sim_time: false
+    photo_save_dir: "~/mission_photos"
+    # OAK-D ROS driver publishes on /oak/rgb/image_raw by default.
+    # robot.launch.py remaps this to /camera so the node needs no change.
+    # If you prefer explicit remapping here instead, set:
+    #   camera_topic: "/oak/rgb/image_raw"
+    camera_topic: "/camera"       # see robot.launch.py remap /oak/rgb/image_raw → /camera
+    # OAK-D depth stream for improved distance estimation
+    depth_topic: "/oak/stereo/image_raw"
+    use_depth: true               # set false to fall back to LiDAR bearing match
+    # HSV range for orange cone detection (unchanged from sim)
+    orange_h_low: 5
+    orange_h_high: 20
+    orange_s_low: 150
+    orange_v_low: 100
+    cone_real_height: 0.32
+    min_contour_area: 200
+
+# --- GamepadController ---
+gamepad_controller:
+  ros__parameters:
+    use_sim_time: false
+    # PS4 DualShock 4 (Bluetooth) button/axis layout:
+    #   Buttons: 0=Cross/X  1=Circle/O  2=Square  3=Triangle
+    #   Axes:    0=Lx  1=Ly  2=L2  3=Rx  4=Ry  5=R2
+    auto_button: 0
+    manual_button: 1
+    deadman_axis_l: 2
+    deadman_axis_r: 5
+    deadman_threshold: 0.5
+    drive_linear_axis: 1
+    drive_angular_axis: 0
+    max_manual_linear: 0.25      # match reduced real-robot speed
+    max_manual_angular: 1.0
+
+# --- PathRecorder ---
+path_recorder:
+  ros__parameters:
+    use_sim_time: false
+    record_hz: 2.0
+    publish_hz: 1.0
+    min_move: 0.05
+    map_frame: "map"
+    base_frame: "base_link"
+    output_dir: "~/mission_data"

@@ -1,0 +1,48 @@
+# GPS waypoints for Pioneer P3-AT Part 2 mission (real robot)
+#
+# datum  : ENU reference origin.  The gps_converter node uses this as the
+#          (0, 0) point in the local map frame.  Set it to a recognisable
+#          landmark near the centre of the course (e.g. a corner of the field)
+#          so all converted coordinates are positive and intuitively readable.
+#
+#          !! Replace with the ACTUAL coordinates of your test field !!
+#          The values below are example coordinates for reference only.
+#
+# waypoints : Four orange traffic-cone positions, visited in order.
+#             The robot must return to the start (WP0 = datum) after WP4.
+#
+# weave_segment : [a, b] — the robot will weave through cones placed between
+#                 waypoint index a and waypoint index b.
+#
+# Coordinate system after conversion (ENU, metres):
+#   x = East  (positive → right when facing North)
+#   y = North (positive → ahead  when facing North)
+
+datum:
+  latitude:  -31.97990   # reference origin – e.g. James Oval centre
+  longitude: 115.81740
+
+waypoints:
+  - name: WP1
+    latitude:  -31.97960
+    longitude: 115.81770
+    # Approximate ENU: x ≈ +24 m East, y ≈ +33 m North
+
+  - name: WP2
+    latitude:  -31.98020
+    longitude: 115.81710
+    # Approximate ENU: x ≈ -27 m East, y ≈ -33 m North
+
+  - name: WP3
+    latitude:  -31.97970
+    longitude: 115.81790
+    # Approximate ENU: x ≈ +40 m East, y ≈ +22 m North
+
+  - name: WP4
+    latitude:  -31.98030
+    longitude: 115.81700
+    # Approximate ENU: x ≈ -36 m East, y ≈ -44 m North
+
+# Waypoint indices [a, b] between which the weave manoeuvre is performed.
+# Index 0 is WP1 above; robot leaves WP1 and weaves towards WP2.
+weave_segment: [0, 1]
